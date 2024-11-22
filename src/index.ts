@@ -37,21 +37,6 @@ app.post("/", async (req, res) => {
   await setstatus(senderId, "transfered", 200, transactionId, true);
   await setstatus(receiverId, "transfered", 200, transactionId, false);
 
-  const dataToPush = JSON.stringify({
-    transactionId: transactionId,
-    statusCode: 200,
-    errorCode: 0,
-  });
-
-  const topic = pubSubClient.topic(triggerPaymentCompletion);
-  const pubSubData = Buffer.from(dataToPush);
-  try {
-    const message = await topic.publishMessage({data: pubSubData});
-    console.log(message);
-  } catch (err) {
-    console.log(err);
-    return res.status(200).send();
-  }
   return res.status(200).send();
 });
 
