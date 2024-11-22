@@ -1,13 +1,9 @@
 import express from "express";
-import {PubSub} from "@google-cloud/pubsub";
 import {setstatus, transferBalance} from "./storage";
 
 const app = express();
 
 app.use(express.json());
-
-const pubSubClient = new PubSub();
-const triggerPaymentCompletion = "payment-completed";
 
 app.post("/", async (req, res) => {
   if (!req.body) {
