@@ -17,12 +17,12 @@ export const transferBalance = async (
   await firestore
     .collection("account")
     .doc(senderId)
-    .set({balance: response?.balance - amount});
+    .update({balance: response?.balance - amount});
 
   await firestore
     .collection("account")
     .doc(receiverId)
-    .set({balance: response?.balance + amount});
+    .update({balance: response?.balance + amount});
 
   return;
 };
@@ -33,6 +33,7 @@ export const setstatus = async (
   status: string,
   errorcode: number,
   id: any,
+  amount: number,
   isDebit: boolean
 ) => {
   await firestore
@@ -44,6 +45,7 @@ export const setstatus = async (
         transactionStatus: status,
         errorCode: errorcode,
         transactionId: id,
+        amount: amount,
         debit: isDebit,
       }),
     });
