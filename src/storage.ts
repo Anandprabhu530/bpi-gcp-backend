@@ -29,8 +29,9 @@ export const transferBalance = async (
 
 export const setstatus = async (
   idToUpdate: string,
+  toId: string,
   status: string,
-  statuscode: number,
+  errorcode: number,
   id: any,
   isDebit: boolean
 ) => {
@@ -39,8 +40,9 @@ export const setstatus = async (
     .doc(idToUpdate)
     .update({
       values: FieldValue.arrayUnion({
+        from: toId,
         transactionStatus: status,
-        code: statuscode,
+        errorCode: errorcode,
         transactionId: id,
         debit: isDebit,
       }),

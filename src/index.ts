@@ -30,8 +30,8 @@ app.post("/", async (req, res) => {
 
   await transferBalance(senderId, receiverId, amount);
 
-  await setstatus(senderId, "transfered", 200, transactionId, true);
-  await setstatus(receiverId, "transfered", 200, transactionId, false);
+  await setstatus(senderId, receiverId, "transfered", 0, transactionId, true);
+  await setstatus(receiverId, senderId, "transfered", 0, transactionId, false);
 
   return res.status(200).send();
 });
