@@ -36,17 +36,37 @@ export const setstatus = async (
   amount: number,
   isDebit: boolean
 ) => {
-  await firestore
-    .collection("transactions")
-    .doc(idToUpdate)
-    .update({
-      values: FieldValue.arrayUnion({
-        from: toId,
-        transactionStatus: status,
-        errorCode: errorcode,
-        transactionId: id,
-        amount: amount,
-        debit: isDebit,
-      }),
-    });
+  const TransactionDoc = firestore.collection("transactions").doc(idToUpdate);
+  const userRef = await TransactionDoc.get();
+  if (userRef.exists) {
+    await firestore
+      .collection("transactions")
+      .doc(idToUpdate)
+      .update({
+        values: FieldValue.arrayUnion({
+          from: toId,
+          transactionStatus: status,
+          errorCode: errorcode,
+          transactionId: id,
+          amount: amount,
+          debit: isDebit,
+        }),
+      });
+  } else {
+    await firestore
+      .collection("transactions")
+      .doc(idToUpdate)
+      .set({
+        values: [
+          {
+            from: toId,
+            transactionStatus: status,
+            errorCode: errorcode,
+            transactionId: id,
+            amount: amount,
+            debit: isDebit,
+          },
+        ],
+      });
+  }
 };
