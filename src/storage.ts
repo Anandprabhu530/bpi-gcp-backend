@@ -13,16 +13,21 @@ export const transferBalance = async (
 ) => {
   const res = await firestore.collection("account").doc(senderId).get();
   const response = res.data();
+  const receiver_res = await firestore
+    .collection("account")
+    .doc(senderId)
+    .get();
+  const receiver_response = receiver_res.data();
 
   await firestore
     .collection("account")
     .doc(senderId)
-    .update({balance: response?.balance - amount});
+    .update({balance: Number(response?.balance) - Number(amount)});
 
   await firestore
     .collection("account")
     .doc(receiverId)
-    .update({balance: response?.balance + amount});
+    .update({balance: Number(receiver_response?.balance) + Number(amount)});
 
   return;
 };
