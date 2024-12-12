@@ -15,7 +15,7 @@ export const transferBalance = async (
   const response = res.data();
   const receiver_res = await firestore
     .collection("account")
-    .doc(senderId)
+    .doc(receiverId)
     .get();
   const receiver_response = receiver_res.data();
 
